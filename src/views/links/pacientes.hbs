@@ -1,0 +1,46 @@
+<div class="container">
+    <h1 class="centar">Listado pacientes</h1>
+    <div class="row">
+
+        <div class="col margenBotonAgregarPaciente">
+            <a href="links/add/" class="btn btn-lg btn-primary fas fa-user-plus">Agragar Paciente</a>
+        </div>
+    </div>
+    <table class="table margen">
+        <thead class="tamañoTituloTabla">
+            <tr class="table-primary">
+            <th >Codigo Paciente</th>
+            <th >Nombres</th>
+            <th >Apellidos</th>
+            <th >Fecha Nacimiento</th>
+            <th >Teléfono</th>
+            <th >Fecha de Creación</th>
+            <th >Acción</th>
+            </tr>
+        </thead>
+        <tbody class="table-secondary">
+            {{#each pacientes}}
+            <tr>
+                <td>{{codigo_paciente}}</td>
+                <td >{{nombres_paciente}}</td>
+                <td >{{apellidos_paciente}}</td>
+                <td >{{fecha_nac}}</td>
+                <td >{{telefono_paciente}}</td>
+                <td >{{created_at}}</td>
+                <td >
+                    <a href="/links/edit/{{codigo_paciente}}" class="btn btn-primary btn-sm far fa-edit" title="Editar"></a>
+                    <a href="/links/delete/{{codigo_paciente}}" class="btn btn-danger btn-sm far fa-trash-alt" title="Eliminar"></a>
+                    <a href="/links/fichaTratamiento/{{codigo_paciente}}" class="btn btn-success btn-sm fas fa-file-medical-alt" title="Ficha tratamiento"></a>
+                </td>
+            </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No existen pacientes guardados aun</p>
+                    <a href="/links/add">Crea uno!!!</a>
+                </div>
+            </div>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,51 @@
+<main class="index">
+    <header class="masthead d-flex">
+        <div class="container text-center mx-auto">
+            <h3>Ficha de Tratamiento</h3>
+            <div class="row">
+                <div class="col">
+                    <i><b><h4 class="centradoTitulo">Datos de la clinica</h4></b></i>
+                    <hr>
+                    <b>Clinica: </b>{{fichaTratamiento.nombre_clinica}}<br>
+                    <b>Dirección: </b>{{fichaTratamiento.direccion_clinica}} <br>
+                    <b>Teléfono: </b>{{fichaTratamiento.telefono_clinica}}
+                    <hr>
+                </div>
+                <div class="col">
+                    <i><b><h4 class="centradoTitulo">Medico que Atiende</h4></b></i>
+                    <hr>
+                    <b>Nombres Médico: </b> {{fichaTratamiento.nombres_medico}} <br>
+                    <b>Apellidos Médico: </b> {{fichaTratamiento.apellidos_medico}}
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <i><b><h4 class="centradoTitulo">Datos del Paciente</h4></b></i>
+                    <hr>
+                    <b>Nombres:</b>{{fichaTratamiento.nombres_paciente}} <br>
+                    <b>Apellidos:</b>{{fichaTratamiento.apellidos_paciente}} <br>
+                    <hr>
+                </div>
+                <div class="col">
+                    <i><b><h4 class="centradoTitulo">Enfermedad</h4></b></i>
+                    <hr>
+                    <b>Nombre de la Enfermedad: </b> {{fichaTratamiento.nombre_enfermedad}} <br>
+                    <b>Tratamiento: </b> {{fichaTratamiento.tratamiento}}
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </header>
+</main>
+
+{{!-- <div class="card">
+  <div class="card-header">
+    Ficha de Tratamiento
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Special title treatment</h5>
+    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div> --}}
