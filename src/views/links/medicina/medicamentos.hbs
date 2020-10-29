@@ -1,0 +1,43 @@
+<div class="container">
+    <h1 class="centar">Listado Medicamentos</h1>
+    <div class="row">
+
+        <div class="col margenBotonAgregarPaciente">
+            <a href="/links/medicina/addMedicina" class="btn btn-lg btn-primary fas fa-user-plus">Agragar Medicamento</a>
+        </div>
+    </div>
+    <table class="table margen">
+        <thead>
+            <tr class="table-primary">
+            <th scope="col">#</th>
+            <th scope="col">Tipo Medicina</th>
+            <th scope="col">Nombre Medicina</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Fecha de ingreso</th>
+            <th scope="col">Acción</th>
+            </tr>
+        </thead>
+        <tbody class="table-secondary">
+            {{#each medicamentos}}
+            <tr>
+                <td>{{codigo_stock}}</td>
+                <td>{{tipo_medicina}}</td>
+                <td>{{nombre_medicina}}</td>
+                <td>{{cantidad}}</td>
+                <td>{{fecha_ingreso}}</td>
+                <td>
+                    <a href="/links/medicina/editarMed/{{codigo_stock}}" class="btn btn-primary btn-sm far fa-edit" title="Editar"></a>
+                    <a href="/links/medicina/delete/{{codigo_stock}}" class="btn btn-danger btn-sm far fa-trash-alt" title="Eliminar"></a>
+                </td>
+            </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No existen Medicamentos guardados aún.</p>
+                    <a href="/links/medicina/addMedicina">Crea uno!!!</a>
+                </div>
+            </div>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

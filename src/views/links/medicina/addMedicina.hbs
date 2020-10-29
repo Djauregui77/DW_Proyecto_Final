@@ -1,0 +1,53 @@
+<div class="container margen">
+    <div class="col">
+        <a href="/links" class="btn btn-lg btn-primary fas fa-reply">Regresar</a>
+    </div>
+    <h1 class="centar">Agregar Medicamento</h1>
+    <div class="row">
+        <div class="col mx-auto">
+            <div class="card-body">
+                <form action="/links/medicina/addMedicina" method="POST">
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Nombre Medicina</label>
+                                    <input type="text" class="form-control" name="nombre_medicina" maxlength="100" autofocus>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label>Tipo de Medicamento</label>
+                                <select class="form-control" name="tipo_medicina">
+                                    <label>Tipo de Medicina</label>
+                                    <option>Analgésicos</option>
+                                    <option>Antiácidos</option>
+                                    <option>Antialérgicos</option>
+                                </select>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Cantidad</label>
+                                    <input type="number" class="form-control" name="cantidad" maxlength="10">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Fecha de Ingreso</label>
+                                    <input type="date" class="form-control" name="fecha_ingreso">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col margenBotones">
+                            <div class="form-group">
+                                <button class="btn btn-primary">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
