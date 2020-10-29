@@ -1,0 +1,43 @@
+<div class="container">
+    <h1 class="centar">Listado Médicos</h1>
+    <div class="row">
+
+        <div class="col margenBotonAgregarPaciente">
+            <a href="/links/medico/addMedico/" class="btn btn-lg btn-primary fas fa-user-plus">Agragar Médico</a>
+        </div>
+    </div>
+    <table class="table margen">
+        <thead class="tamañoTituloTabla">
+            <tr class="table-primary">
+            <th >Codigo Médico</th>
+            <th >Nombres</th>
+            <th >Apellidos</th>
+            <th >DPI</th>
+            <th >Teléfono</th>
+            <th >Acción</th>
+            </tr>
+        </thead>
+        <tbody class="table-secondary">
+            {{#each medico}}
+            <tr>
+                <td>{{codigo_medico}}</td>
+                <td >{{nombres_medico}}</td>
+                <td >{{apellidos_medico}}</td>
+                <td >{{codigo_personal}}</td>
+                <td >{{telefono}}</td>
+                <td >
+                    <a href="/links/medico/editarMedico/{{codigo_medico}}" class="btn btn-primary btn-sm far fa-edit" title="Editar"></a>
+                    <a href="/links/medico/delete/{{codigo_medico}}" class="btn btn-danger btn-sm far fa-trash-alt" title="Eliminar"></a>
+                </td>
+            </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No existen Medicos guardados aun</p>
+                    <a href="/links/medico/addMedico">Crea uno!!!</a>
+                </div>
+            </div>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

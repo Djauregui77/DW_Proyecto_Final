@@ -1,0 +1,50 @@
+<div class="container margen">
+    <div class="col">
+        <a href="/links/medico/medicos" class="btn btn-lg btn-primary fas fa-reply">Regresar</a>
+    </div>
+    <h1 class="centar">Editar Médico</h1>
+    <div class="row">
+        <div class="col mx-auto">
+            <div class="card-body">
+                <form action="/links/medico/editarMedico/{{medico.codigo_medico}}" method="POST">
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Nombres del Médico</label>
+                                    <input type="text" value="{{medico.nombres_medico}}" class="form-control" name="nombres_medico" placeholder="Nombres Médico" autofocus>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Apellidos del Médico</label>
+                                    <input type="text" value="{{medico.apellidos_medico}}" class="form-control" name="apellidos_medico" placeholder="Apellidos Médico">
+                                </div>
+                            </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>DPI</label>
+                                    <input type="text" value="{{medico.codigo_personal}}" class="form-control" name="codigo_personal" maxlength="13">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Teléfono</label>
+                                    <input type="text" value="{{medico.telefono}}" class="form-control" name="telefono" placeholder="5555555" maxlength="8">
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="col margenBotones">
+                            <div class="form-group">
+                                <button class="btn btn-primary">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
