@@ -1,0 +1,53 @@
+<div class="container margen">
+    <h1 class="centar">Agendar Cita Médica</h1>
+    <div class="row">
+        <div class="col mx-auto">
+            <div class="card-body">
+                <form action="/links/agendarCita" method="POST">
+                <div class="container">
+                    <u><i><b><h4>Datos del paciente</h4></b></i></u>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Codigo del Paciente</label>
+                                <input type="text" value="{{paciente.codigo_paciente}}" class="form-control" name="codigo_paciente" id ="codigoPaciente" onchange="buscarPaciente()" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Nombre Paciente</label>
+                                <input type="text" value="{{paciente.nombres_paciente}}" class="form-control" name="nombres_paciente"  required readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Apellidos Paciente</label>
+                                <input type="text" value="{{paciente.apellidos_paciente}}" class="form-control" name="apellidos_paciente" autocomplete="off" required readonly>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Fecha de la Cita</label>
+                                <input type="date"  class="form-control" name="fecha_cita" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function buscarPaciente() {
+  var x = document.getElementById("codigoPaciente");
+  var valor = document.getElementById("codigoPaciente").value;
+  window.location= `/links/agendarCita/${valor}`;
+}
+</script>

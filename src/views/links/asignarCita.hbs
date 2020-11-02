@@ -1,0 +1,45 @@
+<div class="container margen">
+    <h1 class="centar">Agendar Cita Médica</h1>
+    <div class="row">
+        <div class="col mx-auto">
+            <div class="card-body">
+                <form action="/links/asignarMedico" method="POST">
+                <div class="container">
+                    <u><i><b><h4>Datos del paciente</h4></b></i></u>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Codigo del Médico</label>
+                                <input type="text" value="{{medico.codigo_medico}}" class="form-control" name="codigo_medico" id ="codigoMedico" onchange="buscarMedico()" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Nombre Médico</label>
+                                <input type="text" value="{{medico.nombres_medico}}" class="form-control" name="nombres_medico" required readonly>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Apellidos Médico</label>
+                                <input type="text" value="{{medico.apellidos_medico}}" class="form-control" name="apellidos_medico" required readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function buscarMedico() {
+  var x = document.getElementById("codigoMedico");
+  var valor = document.getElementById("codigoMedico").value;
+  window.location= `/links/asignarMedico/${valor}`;
+}
+</script>

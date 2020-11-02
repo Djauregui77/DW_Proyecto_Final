@@ -12,12 +12,12 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Nombre Medicina</label>
-                                    <input type="text" value="{{medicina.nombre_medicina}}" class="form-control" name="nombre_medicina" maxlength="100" autofocus>
+                                    <input type="text" value="{{medicina.nombre_medicina}}" class="form-control" name="nombre_medicina" maxlength="100" autofocus required>
                                 </div>
                             </div>
                             <div class="col">
                                 <label>Tipo de Medicamento</label>
-                                <select value="{{medicina.tipo_medicina}}" class="form-control" name="tipo_medicina">
+                                <select value="{{medicina.tipo_medicina}}" class="form-control" name="tipo_medicina" required>
                                     <label>Tipo de Medicina</label>
                                     <option>Analgésicos</option>
                                     <option>Antiácidos</option>
@@ -29,7 +29,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input type="number" value="{{medicina.cantidad}}" class="form-control" name="cantidad" maxlength="10">
+                                    <input type="number" value="{{medicina.cantidad}}" class="form-control" name="cantidad" maxlength="10" required>
                                 </div>
                             </div>
                             <div class="col"></div>

@@ -12,13 +12,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Nombres del Médico</label>
-                                    <input type="text" value="{{medico.nombres_medico}}" class="form-control" name="nombres_medico" placeholder="Nombres Médico" autofocus>
+                                    <input type="text" value="{{medico.nombres_medico}}" class="form-control" name="nombres_medico" placeholder="Nombres Médico" autofocus required>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label>Apellidos del Médico</label>
-                                    <input type="text" value="{{medico.apellidos_medico}}" class="form-control" name="apellidos_medico" placeholder="Apellidos Médico">
+                                    <input type="text" value="{{medico.apellidos_medico}}" class="form-control" name="apellidos_medico" placeholder="Apellidos Médico" required>
                                 </div>
                             </div>
                         </div>  
@@ -26,13 +26,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>DPI</label>
-                                    <input type="text" value="{{medico.codigo_personal}}" class="form-control" name="codigo_personal" maxlength="13">
+                                    <input type="text" value="{{medico.codigo_personal}}" class="form-control" name="codigo_personal" maxlength="13" required>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label>Teléfono</label>
-                                    <input type="text" value="{{medico.telefono}}" class="form-control" name="telefono" placeholder="5555555" maxlength="8">
+                                    <input type="text" value="{{medico.telefono}}" class="form-control" name="telefono" placeholder="5555555" maxlength="8" required>
                                 </div>
                             </div>
                         </div>

@@ -12,16 +12,17 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Nombre Medicina</label>
-                                    <input type="text" class="form-control" name="nombre_medicina" maxlength="100" autofocus>
+                                    <input type="text" class="form-control" name="nombre_medicina" maxlength="100" autofocus required>
                                 </div>
                             </div>
                             <div class="col">
                                 <label>Tipo de Medicamento</label>
-                                <select class="form-control" name="tipo_medicina">
+                                <select class="form-control" name="tipo_medicina" required>
                                     <label>Tipo de Medicina</label>
-                                    <option>Analgésicos</option>
-                                    <option>Antiácidos</option>
-                                    <option>Antialérgicos</option>
+                                        <option value="">Seleccione una opción</option>
+                                    {{#each tipoMedicamentos}}
+                                        <option >{{nombre_tipo}}</option>
+                                    {{/each}}
                                 </select>
                             </div>
                         </div>  
@@ -29,13 +30,13 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>Cantidad</label>
-                                    <input type="number" class="form-control" name="cantidad" maxlength="10">
+                                    <input type="number" class="form-control" name="cantidad" maxlength="10" required>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label>Fecha de Ingreso</label>
-                                    <input type="date" class="form-control" name="fecha_ingreso">
+                                    <input type="date" class="form-control" name="fecha_ingreso" required>
                                 </div>
                             </div>
                         </div>

@@ -8,37 +8,69 @@
     <ul class="navbar-nav ml-auto">
       {{#if user}}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Pacientes
+          <a class="nav-link dropdown-toggle fas fa-user-injured" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Pacientes
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/links">Lista de Pacientes</a>
+            <a class="dropdown-item fas fa-users" href="/links"> Lista de Pacientes</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/links/add">Agregar Pacientes</a>
+            <a class="dropdown-item fas fa-user-plus" href="/links/add"> Agregar Pacientes</a>
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Medicina
+          <a class="nav-link dropdown-toggle fas fa-prescription-bottle-alt" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Medicina
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/links/medicina/medicamentos">Lista de Medicina</a>
+            <a class="dropdown-item fas fa-notes-medical" href="/links/medicina/medicamentos"> Lista de Medicina</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/links/medicina/addMedicina">Agregar Medicamentos</a>
+            <a class="dropdown-item fas fa-file-medical" href="/links/medicina/addMedicina"> Agregar Medicamentos</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fas fa-user-md" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Médico
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item fas fa-user-nurse" href="/links/medico/medicos"> Lista de Médicos</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-user-plus" href="/links/medico/addMedico"> Agregar Médico</a>
+          </div>
+        </li>
+                <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fas fa-notes-medical" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Citas Médicas
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item fas fa-calendar-plus" href="/links/agendarCita"> Agendar Cita Médica</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-user-times" href="/links/verCitasCreadas"> Ver Citas Sin asignación de Médico</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-user-nurse" href="/links/verCitasAsignadasMedico"> Ver Citas Asignadas a Médico</a>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fas fa-book" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Catálogos
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item fas fa-bacteria" data-toggle="modal" data-target="#modalEnfermedad" style="cursor: pointer;"> Agregar Enfermedad</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-pills" data-toggle="modal" data-target="#modalTipoMedicamento" style="cursor: pointer;"> Agregar Tipo de Medicamento</a>
           </div>
         </li>
         <li class="nav-item">
-          <a href="/perfil" class="nav-link">Perfil</a>
+          <a href="/perfil" class="nav-link fas fa-user-circle"> Perfil</a>
         </li>
         <li class="nav-item">
-          <a href="/logout" class="nav-link">Cerrar Sesión</a>
+          <a href="/logout" class="nav-link fas fa-sign-out-alt"> Sing Out</a>
         </li>
         {{else}}
         <li class="nav-item">
-          <a href="/signin" class="nav-link">SignIn</a>
+          <a href="/signin" class="nav-link fas fa-home"> SignIn</a>
         </li>
         <li class="nav-item">
-          <a href="/signup" class="nav-link">SignUp</a>
+          <a href="/signup" class="nav-link fas fa-user-plus"> SignUp</a>
         </li>
       {{/if}}
 
@@ -46,3 +78,123 @@
     </div>
   </div>
 </nav>
+
+
+<!-- Modal Tipo Medicamentos-->
+<div class="modal fade" id="modalTipoMedicamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Tipo Medicamento</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/links/tipoMedicamento" method="POST">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Nombre tipo Medicamento</label>
+                  <input type="text" class="form-control" name="nombre_tipo" placeholder="Analgésico" autofocus autocomplete="off" required>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tipo Enfermedad-->
+<div class="modal fade" id="modalEnfermedad" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Enfermedad</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/links/enfermedad" method="POST">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Nombre Enfermedad</label>
+                  <input type="text" class="form-control" name="nombre_enfermedad" placeholder="Gripe" autofocus autocomplete="off" required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Tratamiento</label>
+                  <textarea type="text" class="form-control" name="tratamiento" placeholder="Tomar jarabe expectorante" autocomplete="off" required></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Cita Medica-->
+{{!-- <div class="modal fade" id="modalCitaMedica" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agendar cita Médica</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/links/enfermedad" method="POST">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Codigo del Paciente</label>
+                  <input type="text" class="form-control" name="codigoPaciente" id ="codigoPaciente" autofocus onchange="myFunction()" autocomplete="off" required>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label>Nombre Paciente</label>
+                  <input type="text" value="{{resultado.nombres_paciente}}" class="form-control" name="nombre_enfermedad"  required readonly>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Tratamiento</label>
+                  <textarea type="text" class="form-control" name="tratamiento" placeholder="Tomar jarabe expectorante" autocomplete="off" required></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-primary">Guardar</button>
+          </div>
+        </form> 
+      </div>
+    </div>
+  </div>
+</div>
+ --}}

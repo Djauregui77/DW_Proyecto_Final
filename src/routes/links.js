@@ -59,15 +59,18 @@ router.post('/edit/:id', isLoggedIn,  async (req, res) => {
 });
 
 router.get ('/fichaTratamiento/:id', isLoggedIn,  async (req, res) => {
-    const fichaTratamiento = await pool.query('SELECT f.codigo_ficha as codigo_ficha, p.codigo_paciente, p.nombres_paciente, p.apellidos_paciente, p.fecha_nac, p.telefono_paciente, m.codigo_medico, m.nombres_medico, m.apellidos_medico, e.codigo_enfermedad, e.nombre_enfermedad, e.tratamiento, c.codigo_clinica, c.nombre_clinica, c.direccion_clinica, c.telefono_clinica FROM ficha_tratamiento f inner join pacientes as p on f.codigo_ficha = p.codigo_ficha inner join medico as m on f.codigo_medico = m.codigo_medico inner join enfermedad as e on f.codigo_enfermedad = e.codigo_enfermedad inner join clinica as c on f.codigo_clinica = c.codigo_clinica;');
+    const { id } = req.params;
+    const fichaTratamiento = await pool.query(`SELECT f.codigo_ficha as codigo_ficha, p.codigo_paciente, p.nombres_paciente, p.apellidos_paciente, p.fecha_nac, p.telefono_paciente, m.codigo_medico, m.nombres_medico, m.apellidos_medico, e.codigo_enfermedad, e.nombre_enfermedad, e.tratamiento, c.codigo_clinica, c.nombre_clinica, c.direccion_clinica, c.telefono_clinica FROM ficha_tratamiento f inner join pacientes as p on f.codigo_ficha = p.codigo_ficha inner join medico as m on f.codigo_medico = m.codigo_medico inner join enfermedad as e on f.codigo_enfermedad = e.codigo_enfermedad inner join clinica as c on f.codigo_clinica = c.codigo_clinica WHERE p.codigo_paciente = ${id}`);
     console.log(fichaTratamiento);
     res.render('links/fichaTratamiento', {fichaTratamiento:fichaTratamiento[0]})
 });
 
 // Servicios de Medicina -----------------------------------------------------------------------------------
 
-router.get('/medicina/addMedicina', isLoggedIn, (req, res) => {
-    res.render('links/medicina/addMedicina');
+router.get('/medicina/addMedicina', isLoggedIn, async (req, res) => {
+    const tipoMedicamentos = await pool.query('SELECT * FROM tipo_medicamento');
+    console.log('Los tipos ingresados', tipoMedicamentos);
+    res.render('links/medicina/addMedicina', {tipoMedicamentos})
 });
 
 
@@ -171,7 +174,101 @@ router.post('/medico/editarMedico/:id', isLoggedIn,  async (req, res) => {
     };
     await pool.query('UPDATE medico set ? WHERE codigo_medico = ?', [medicoEditar, id]);
     req.flash('success', 'Medico actualizado exitosamente');
-    res.redirect('/links/medico/medicos')
+    res.redirect('/links/medico/medicos');
 });
+
+
+// Catalogos -----------------------------------------------------------------------------------------------
+router.post ('/tipoMedicamento', isLoggedIn,  async (req, res) => {
+    const { nombre_tipo} = req.body;
+    const tipoMedicamento = {
+        nombre_tipo
+    };
+    await pool.query('INSERT INTO tipo_medicamento set ?', [tipoMedicamento]);
+    req.flash('success', 'Información agregada exitosamente');
+    res.redirect('/links/medico/medicos');
+});
+
+router.post ('/enfermedad', isLoggedIn,  async (req, res) => {
+    const { nombre_enfermedad, tratamiento} = req.body;
+    const enfermedad = {
+        nombre_enfermedad,
+        tratamiento
+    };
+    await pool.query('INSERT INTO enfermedad set ?', [enfermedad]);
+    req.flash('success', 'Información agregada exitosamente');
+    res.redirect('/links/medico/medicos');
+});
+
+router.get('/agendarCita/:id', isLoggedIn,  async (req, res) => {
+        const { id } = req.params;
+        const paciente = await pool.query('SELECT * FROM pacientes WHERE codigo_paciente = ?', [id]);
+        res.render('links/agendarCita', {paciente: paciente[0]});
+});
+
+router.get('/agendarCita', isLoggedIn,  async (req, res) => {
+    res.render('links/agendarCita');
+});
+
+router.post ('/agendarCita', isLoggedIn,  async (req, res) => {
+    const { codigo_paciente, nombres_paciente, apellidos_paciente, fecha_cita} = req.body;
+    const agendarCita = {
+        codigo_paciente,
+        nombres_paciente,
+        apellidos_paciente,
+        fecha_cita
+    };
+    await pool.query('INSERT INTO cita_agendada set ?', [agendarCita]);
+    req.flash('success', 'Información agregada exitosamente');
+    res.redirect('/perfil');
+});
+
+router.get ('/verCitasCreadas', isLoggedIn,  async (req, res) => {
+    const citasCreadas = await pool.query('select * from cita_agendada WHERE codigo_medico IS NULL');
+    console.log(citasCreadas);
+    res.render('links/verCitasCreadas', {citasCreadas})
+});
+
+var idEnviado;
+router.get('/asignarCita/:id', isLoggedIn,  async (req, res) => {
+    const { id } = req.params;
+    console.log('el id que se envia', id);
+    idEnviado = id;
+    console.log('El id en la variable', idEnviado)
+    const cita = await pool.query('SELECT * FROM cita_agendada WHERE codigo_cita = ?', [id]);
+    res.render('links/asignarCita', {cita: cita[0]});
+});
+
+router.get('/asignarMedico/:id', isLoggedIn,  async (req, res) => {
+    const { id } = req.params;
+    const medico = await pool.query('SELECT * FROM medico WHERE codigo_medico = ?', [id]);
+    res.render('links/asignarCita', {medico: medico[0]});
+});
+
+router.post ('/asignarMedico', isLoggedIn,  async (req, res) => {
+    const { codigo_medico, nombres_medico} = req.body;
+    const asignarMedico = {
+        codigo_medico,
+        nombres_medico
+    };
+    await pool.query(`UPDATE clinica.cita_agendada SET ? WHERE codigo_cita = ${idEnviado}`, [asignarMedico]);
+    req.flash('success', 'Información agregada exitosamente');
+    res.redirect('/links/verCitasCreadas');
+});
+
+router.get ('/verCitasAsignadasMedico', isLoggedIn,  async (req, res) => {
+    const citasCreadas = await pool.query('SELECT c.codigo_cita as codigo_cita, c.nombres_paciente, c.apellidos_paciente, c.fecha_cita, m.nombres_medico FROM cita_agendada c inner join medico as m on m.codigo_medico = c.codigo_medico;');
+    console.log(citasCreadas);
+    res.render('links/verCitasAsignadasMedico', {citasCreadas})
+});
+
+
+router.get('/asignarCita', isLoggedIn,  async (req, res) => {
+    res.render('links/asignarCita');
+});
+
+
+
+
 
 module.exports = router

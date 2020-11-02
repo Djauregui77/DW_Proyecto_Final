@@ -1,0 +1,39 @@
+<div class="container">
+    <h1 class="centar">Listado Citas sin Asignar Médico</h1>
+    <div class="row">
+    </div>
+    <table class="table margen">
+        <thead class="tamañoTituloTabla">
+            <tr class="table-primary">
+            <th >Código Cita</th>
+            <th >Nombre del Paciente</th>
+            <th >Apellidos del Paciente</th>
+            <th >Fecha de Cita</th>
+            <th >Nombre del Medico que atiende</th>
+            <th >Acción</th>
+            </tr>
+        </thead>
+        <tbody class="table-secondary">
+            {{#each citasCreadas}}
+            <tr>
+                <td>{{codigo_cita}}</td>
+                <td >{{nombres_paciente}}</td>
+                <td >{{apellidos_paciente}}</td>
+                <td >{{fecha_cita}}</td>
+                <td >{{nombres_medico}}</td>
+                <td >
+                    <a href="/links/asignarCita/{{codigo_cita}}" class="btn btn-primary btn-sm fas fa-user-md" title="Asignar Medico"></a>
+                    {{!-- <a href="/links/delete/{{codigo_paciente}}" class="btn btn-danger btn-sm far fa-trash-alt" title="Eliminar"></a>
+                    <a href="/links/fichaTratamiento/{{codigo_paciente}}" class="btn btn-success btn-sm fas fa-file-medical-alt" title="Ficha tratamiento"></a> --}}
+                </td>
+            </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No existen citas para asignación de Médico!</p>
+                </div>
+            </div>
+            {{/each}}
+        </tbody>
+    </table>
+</div>

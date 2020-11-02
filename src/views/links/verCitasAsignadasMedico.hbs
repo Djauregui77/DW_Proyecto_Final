@@ -1,0 +1,31 @@
+<div class="container">
+    <h1 class="centar">Listado Citas Asignadas a  Médico</h1>
+    <div class="row">
+    </div>
+    <table class="table margen">
+        <thead class="tamañoTituloTabla">
+            <tr class="table-primary">
+            <th >Código Cita</th>
+            <th >Nombre del Paciente</th>
+            <th >Apellidos del Paciente</th>
+            <th >Fecha de Cita</th>
+            <th >Nombre del Medico que atiende</th>
+            <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody class="table-secondary">
+            {{#each citasCreadas}}
+            <tr>
+                <td>{{codigo_cita}}</td>
+                <td >{{nombres_paciente}}</td>
+                <td >{{apellidos_paciente}}</td>
+                <td >{{fecha_cita}}</td>
+                <td >{{nombres_medico}}</td>
+                <td>
+                    <a href="/links/atenderPaciente/{{codigo_cita}}" class="btn btn-primary btn-sm fas fa-user-injured" title="Atender Paciente"></a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
