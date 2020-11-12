@@ -39,6 +39,10 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
+var tipoUsuarioAdmin
+var tipoUsuarioMed
+var admin = Boolean
+admin = false;
 // variables globales
 app.use((req, res, next) => {
     app.locals.success = req.flash('success');

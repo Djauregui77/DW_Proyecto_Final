@@ -11,14 +11,20 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
+                                    <label>Código de usuario de Referencia</label>
+                                    <input type="text"  value="{{usuarios.codigo_usuario}}" class="form-control" name="codigo_usuario_referencia" id="codigoUsuario" placeholder="Código de Usuario" autofocus required onchange="buscarUsuario()">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
                                     <label>Nombres del Médico</label>
-                                    <input type="text" class="form-control" name="nombres_medico" placeholder="Nombres Médico" autofocus required>
+                                    <input type="text"  value="{{usuarios.nombres}}" class="form-control" name="nombres_medico" placeholder="Nombres Médico" autofocus required readonly>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label>Apellidos del Médico</label>
-                                    <input type="text" class="form-control" name="apellidos_medico" placeholder="Apellidos Médico" required>
+                                    <input type="text"  value="{{usuarios.apellidos}}" class="form-control" name="apellidos_medico" placeholder="Apellidos Médico" required readonly>
                                 </div>
                             </div>
                         </div>  
@@ -26,7 +32,7 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label>DPI</label>
-                                    <input type="text" class="form-control" name="codigo_personal" maxlength="13" required>
+                                    <input type="text" class="form-control" name="codigo_personal" placeholder="3030486460108" maxlength="13" required>
                                 </div>
                             </div>
                             <div class="col">
@@ -34,6 +40,11 @@
                                     <label>Teléfono</label>
                                     <input type="text" class="form-control" name="telefono" placeholder="5555555" maxlength="8" required>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" value="Médico" name="nombre_tipo_usuario" required>
                             </div>
                         </div>
                         <hr>
@@ -48,3 +59,11 @@
         </div>
     </div>
 </div>
+
+<script>
+function buscarUsuario() {
+  var x = document.getElementById("codigoUsuario");
+  var valor = document.getElementById("codigoUsuario").value;
+  window.location= `/links/buscarUsuario/${valor}`;
+}
+</script>

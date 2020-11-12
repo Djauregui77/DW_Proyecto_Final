@@ -3,6 +3,10 @@ const router = express.Router();
 
 const pool = require('../database'); 
 const { isLoggedIn } = require('../lib/auth'); 
+const passport = require('passport');
+
+const LocalStrategy = require('passport-local').Strategy;
+const helpers = require('../lib/helpers');
 
 router.get('/add', isLoggedIn, (req, res) => {
     res.render('links/add');
@@ -10,13 +14,17 @@ router.get('/add', isLoggedIn, (req, res) => {
 
 // Servicios de Paciente -----------------------------------------------------------------------------------
 router.post ('/add',  isLoggedIn, async (req, res) => {
-    const { nombres_paciente, apellidos_paciente, fecha_nac, telefono_paciente } = req.body;
+    const { nombres_paciente, apellidos_paciente, fecha_nac, telefono_paciente, codigo_referencia_usuario, nombre_tipo_usuario } = req.body;
     const newPaciente = {
         nombres_paciente,
         apellidos_paciente,
         fecha_nac,
-        telefono_paciente
+        telefono_paciente,
+        codigo_referencia_usuario,
+        nombre_tipo_usuario
     };
+
+    const usuarios = { nombre_tipo_usuario }
     await pool.query('INSERT INTO pacientes set ?', [newPaciente]);
     req.flash('success', 'Paciente agregado correctamente');
     res.redirect('/links')
@@ -74,6 +82,7 @@ router.get('/medicina/addMedicina', isLoggedIn, async (req, res) => {
 });
 
 
+
 router.post ('/medicina/addMedicina', isLoggedIn,  async (req, res) => {
     const { nombre_medicina, tipo_medicina, fecha_ingreso, cantidad} = req.body;
     const newMedicina = {
@@ -129,12 +138,14 @@ router.get('/medico/addMedico', isLoggedIn, (req, res) => {
 });
 
 router.post ('/medico/addMedico', isLoggedIn,  async (req, res) => {
-    const { nombres_medico, apellidos_medico, codigo_personal, telefono} = req.body;
+    const { nombres_medico, apellidos_medico, codigo_personal, telefono, codigo_usuario_referencia, nombre_tipo_usuario} = req.body;
     const newMedico = {
         nombres_medico,
         apellidos_medico,
         codigo_personal,
-        telefono
+        telefono,
+        codigo_usuario_referencia,
+        nombre_tipo_usuario
     };
     await pool.query('INSERT INTO medico set ?', [newMedico]);
     req.flash('success', 'Medico agregado correctamente');
@@ -177,6 +188,45 @@ router.post('/medico/editarMedico/:id', isLoggedIn,  async (req, res) => {
     res.redirect('/links/medico/medicos');
 });
 
+var medicoHabitacion;
+router.get('/medico/asignarHabitacion/:id', isLoggedIn, (req, res) => {
+    res.render('links/medico/asignarHabitacion');
+    const { id } = req.params;
+    medicoHabitacion = id;
+    console.log('El codigo del medico a enviar', medicoHabitacion)
+});
+
+router.get ('/medico/verCantidadHabitacionesDisponibles/:id', isLoggedIn,  async (req, res) => {
+    const { id } = req.params;
+    console.log('ver lo que trae la variable', id);
+    const piso = await pool.query(`select * from piso where numero_piso = '${id}'`);
+    console.log('cantidad de habitaciones', piso);
+    const valorHabitaciones = Number (piso[0].cantidad_habitaciones);
+    var tamaño = Number(piso.length);
+    tamaño = tamaño - 1;
+    var valorHabitacionesRestantes = Number(piso[tamaño].cantidad_restante_habitaciones);
+    valorHabitacionesRestantes = valorHabitacionesRestantes - 1;
+    console.log(valorHabitacionesRestantes);
+    piso[0].cantidad_restante_habitaciones = valorHabitacionesRestantes;
+    console.log('cantidad de habitaciones luego de restar', valorHabitacionesRestantes);
+    console.log(piso)
+    console.log('tamaño', tamaño)
+    res.render('links/medico/asignarHabitacion' , {piso: piso[0]});
+});
+
+router.post ('/medico/asignacion', isLoggedIn,  async (req, res) => {
+    const { numero_piso, cantidad_habitaciones, cantidad_restante_habitaciones, codigo_medico_asignado} = req.body;
+    const asignacionPiso = {
+        numero_piso,
+        cantidad_habitaciones,
+        cantidad_restante_habitaciones,
+        codigo_medico_asignado
+    };
+    asignacionPiso.codigo_medico_asignado = medicoHabitacion;
+    await pool.query('INSERT INTO piso set ?', [asignacionPiso]);
+    req.flash('success', 'Información agregada exitosamente');
+    res.redirect('/links/medico/medicos');
+});
 
 // Catalogos -----------------------------------------------------------------------------------------------
 router.post ('/tipoMedicamento', isLoggedIn,  async (req, res) => {
@@ -199,6 +249,8 @@ router.post ('/enfermedad', isLoggedIn,  async (req, res) => {
     req.flash('success', 'Información agregada exitosamente');
     res.redirect('/links/medico/medicos');
 });
+
+// Citas-----------------------------------------------------------------------------------------------------
 
 router.get('/agendarCita/:id', isLoggedIn,  async (req, res) => {
         const { id } = req.params;
@@ -257,7 +309,10 @@ router.post ('/asignarMedico', isLoggedIn,  async (req, res) => {
 });
 
 router.get ('/verCitasAsignadasMedico', isLoggedIn,  async (req, res) => {
-    const citasCreadas = await pool.query('SELECT c.codigo_cita as codigo_cita, c.nombres_paciente, c.apellidos_paciente, c.fecha_cita, m.nombres_medico FROM cita_agendada c inner join medico as m on m.codigo_medico = c.codigo_medico;');
+    console.log (req.user.codigo_usuario);
+    console.log('El codigo del usuario', req.user.codigo_usuario);
+
+    const citasCreadas = await pool.query(`SELECT c.codigo_cita as codigo_cita, c.nombres_paciente, c.apellidos_paciente, c.fecha_cita, m.codigo_medico, m.nombres_medico FROM cita_agendada c inner join medico as m on m.codigo_medico = c.codigo_medico` );
     console.log(citasCreadas);
     res.render('links/verCitasAsignadasMedico', {citasCreadas})
 });
@@ -267,7 +322,79 @@ router.get('/asignarCita', isLoggedIn,  async (req, res) => {
     res.render('links/asignarCita');
 });
 
+// Usuarios  -------------------------------------------------------------------------------------------------
 
+router.get ('/verUsuariosMedicos', isLoggedIn,  async (req, res) => {
+    const usuarios = await pool.query('select u.codigo_usuario as codigo_usuario, u.usuario, u.nombres, u.apellidos, m.nombre_tipo_usuario from usuarios u inner join medico as m on u.codigo_usuario = m.codigo_usuario_referencia;');
+    console.log(usuarios);
+    res.render('links/verUsuariosMedicos', {usuarios})
+});
+
+
+router.get ('/verUsuariosPacientes', isLoggedIn,  async (req, res) => {
+    const usuarios = await pool.query('select u.codigo_usuario as codigo_usuario, u.usuario, u.nombres, u.apellidos, p.nombre_tipo_usuario from usuarios u inner join pacientes as p on u.codigo_usuario = p.codigo_referencia_usuario;');
+    console.log(usuarios);
+    res.render('links/verUsuariosPacientes', {usuarios})
+});
+
+var idUsuario;
+router.get('/asignarTipoUsuario/:id', isLoggedIn,  async (req, res) => {
+    const { id } = req.params;
+    idUsuario = id;
+    const usuario = await pool.query('SELECT * FROM usuarios WHERE codigo_usuario = ?', [id]);
+    console.log(usuario);
+    res.render('links/asignarTipoUsuario', {usuario: usuario[0]});
+});
+
+router.post ('/asignarTipoUsuario', isLoggedIn,  async (req, res) => {
+    const { codigo_tipo_usuario, nombre_tipo_usuario } = req.body;
+    const asignarRolUsuario = {
+        codigo_tipo_usuario,
+        nombre_tipo_usuario
+    };
+    if (asignarRolUsuario.nombre_tipo_usuario == 'Administrador') {
+        asignarRolUsuario.codigo_tipo_usuario = '1';
+    }
+    if (asignarRolUsuario.nombre_tipo_usuario == 'Médico') {
+        asignarRolUsuario.codigo_tipo_usuario = '2';
+    }
+    await console.log(asignarRolUsuario);
+    await pool.query(`UPDATE usuarios SET ? WHERE codigo_usuario = ${idUsuario}`, [asignarRolUsuario]);
+    req.flash('success', 'Información agregada exitosamente');
+    res.redirect('/links/verUsuarios');
+});
+
+
+router.get ('/buscarUsuario/:id', isLoggedIn,  async (req, res) => {
+    const { id } = req.params;
+    const usuarios = await pool.query('select * from usuarios WHERE codigo_usuario = ?', [id]);
+    console.log(usuarios);
+    res.render('links/medico/addMedico', {usuarios: usuarios[0]})
+});
+
+
+router.get ('/buscarUsuarioPaciente/:id', isLoggedIn,  async (req, res) => {
+    const { id } = req.params;
+    console.log(id)
+    const usuario = await pool.query('select * from usuarios WHERE codigo_usuario = ?', [id]);
+    console.log(usuario);
+    res.render('links/add', {usuario: usuario[0]})
+});
+
+var idPacienteF;
+var idMedicoF;
+
+router.get ('/atenderPaciente/:idPaciente/:idMedico', isLoggedIn,  async (req, res) => {
+    const { idPaciente } = req.params;
+    const { idMedico } = req.params;
+    idPacienteF = idPaciente;
+    idMedicoF = idMedico;
+    console.log('Id del paciente almacenado', idPacienteF);
+    console.log('Id del Medico almacenado', idMedicoF);
+    const enfermedades = await pool.query(`select * from enfermedad`);
+    console.log(enfermedades);
+    res.render('links/atenderPaciente', {enfermedades})
+});
 
 
 

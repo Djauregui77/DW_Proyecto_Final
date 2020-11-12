@@ -35,4 +35,4 @@ router.get('/logout',isLoggedIn, (req, res) => {
     res.redirect('/signin');
 });
 
-module.exports = router
+module.exports = router;

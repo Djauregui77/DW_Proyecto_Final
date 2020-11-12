@@ -1,0 +1,50 @@
+<div class="container margen">
+    <div class="col">
+        <a href="/links/medico/medicos" class="btn btn-lg btn-primary fas fa-reply">Regresar</a>
+    </div>
+    <h1 class="centar">Asignar Habitación</h1>
+    <div class="row">
+        <div class="col mx-auto">
+            <div class="card-body">
+                <form action="/links/medico/asignacion" method="POST">
+                    <div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Ingrese código Piso</label>
+                                    <input type="text" value="{{piso.numero_piso}}" class="form-control" name="numero_piso" id="codigoPiso" placeholder="" onchange="buscarHabitacionesDisponibles()" autofocus required>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Cantidad de habitaciones</label>
+                                    <input type="text" value="{{piso.cantidad_habitaciones}}" id="cantidadHabitaciones" class="form-control" name="cantidad_habitaciones" required readonly>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <label>Cantidad de Habitaciones restantes</label>
+                                    <input type="text" value="{{piso.cantidad_restante_habitaciones}}" class="form-control" id="cantidad_habitaciones_restantes" name="cantidad_restante_habitaciones" placeholder="" required readonly>
+                                </div>
+                            </div>
+                        </div> 
+                        <hr>
+                        <div class="col margenBotones">
+                            <div class="form-group">
+                                <button class="btn btn-primary">Enviar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function buscarHabitacionesDisponibles() {
+  var x = document.getElementById("codigoPiso");
+  var valor = document.getElementById("codigoPiso").value;
+  window.location= `/links/medico/verCantidadHabitacionesDisponibles/${valor}`;
+}
+</script>

@@ -6,7 +6,10 @@
             <a href="/links/medico/addMedico/" class="btn btn-lg btn-primary fas fa-user-plus">Agragar Médico</a>
         </div>
     </div>
-    <table class="table margen">
+    <td colspan="4">
+        <input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" />
+    </td>
+    <table class="table margen" id="tabla">
         <thead class="tamañoTituloTabla">
             <tr class="table-primary">
             <th >Codigo Médico</th>
@@ -28,6 +31,7 @@
                 <td >
                     <a href="/links/medico/editarMedico/{{codigo_medico}}" class="btn btn-primary btn-sm far fa-edit" title="Editar"></a>
                     <a href="/links/medico/delete/{{codigo_medico}}" class="btn btn-danger btn-sm far fa-trash-alt" title="Eliminar"></a>
+                    <a href="/links/medico/asignarHabitacion/{{codigo_medico}}" class="btn btn-warning btn-sm fas fa-person-booth" title="Asignar Habitación"></a>
                 </td>
             </tr>
             {{else}}
@@ -41,3 +45,32 @@
         </tbody>
     </table>
 </div>
+
+
+<script>
+        document.querySelector("#buscar").onkeyup = function(){
+        $TableFilter("#tabla", this.value);
+    }
+    
+    $TableFilter = function(id, value){
+        var rows = document.querySelectorAll(id + ' tbody tr');
+        
+        for(var i = 0; i < rows.length; i++){
+            var showRow = false;
+            
+            var row = rows[i];
+            row.style.display = 'none';
+            
+            for(var x = 0; x < row.childElementCount; x++){
+                if(row.children[x].textContent.toLowerCase().indexOf(value.toLowerCase().trim()) > -1){
+                    showRow = true;
+                    break;
+                }
+            }
+            
+            if(showRow){
+                row.style.display = null;
+            }
+        }
+    }
+</script>

@@ -6,7 +6,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      {{#if user}}
+      {{#if user.nombre_tipo_usuario}}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle fas fa-user-injured" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
              Pacientes
@@ -37,7 +37,7 @@
             <a class="dropdown-item fas fa-user-plus" href="/links/medico/addMedico"> Agregar Médico</a>
           </div>
         </li>
-                <li class="nav-item dropdown">
+        <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle fas fa-notes-medical" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
              Citas Médicas
           </a>
@@ -59,6 +59,18 @@
             <a class="dropdown-item fas fa-pills" data-toggle="modal" data-target="#modalTipoMedicamento" style="cursor: pointer;"> Agregar Tipo de Medicamento</a>
           </div>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fas fa-user" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Usuarios
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item fas fa-user-nurse" href="/links/verUsuariosMedicos"> Ver usuarios Médicos</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-users" href="/links/verUsuariosPacientes"> Ver usuarios Pacientes</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-user-shield" href="/links/verCitasAsignadasMedico"> Ver usuarios Administradores</a>
+          </div>
+        </li>
         <li class="nav-item">
           <a href="/perfil" class="nav-link fas fa-user-circle"> Perfil</a>
         </li>
@@ -66,6 +78,23 @@
           <a href="/logout" class="nav-link fas fa-sign-out-alt"> Sing Out</a>
         </li>
         {{else}}
+        {{#if user}}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle fas fa-notes-medical" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Citas Médicas
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            {{!-- <a class="dropdown-item fas fa-calendar-plus" href="/links/agendarCita"> Agendar Cita Médica</a>
+            <div class="dropdown-divider"></div> --}}
+            <a class="dropdown-item fas fa-user-times" href="/links/verCitasCreadas"> Ver Citas Sin asignación de Médico</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item fas fa-user-nurse" href="/links/verCitasAsignadasMedico"> Ver Citas Asignadas a Médico</a>
+          </div>
+        </li>
+      {{/if}}
+        <li class="nav-item">
+          <a href="/logout" class="nav-link fas fa-sign-out-alt"> Sing Out</a>
+        </li>
         <li class="nav-item">
           <a href="/signin" class="nav-link fas fa-home"> SignIn</a>
         </li>
@@ -73,6 +102,8 @@
           <a href="/signup" class="nav-link fas fa-user-plus"> SignUp</a>
         </li>
       {{/if}}
+
+
 
     </ul>
     </div>

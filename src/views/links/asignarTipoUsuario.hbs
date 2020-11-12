@@ -1,0 +1,50 @@
+<div class="container margen">
+    <h1 class="centar">Asignar Roles de Usuario</h1>
+    <div class="row">
+        <div class="col mx-auto">
+            <div class="card-body">
+                <form action="/links/asignarTipoUsuario" method="POST">
+                <div class="container">
+                    <u><i><b><h4>Datos del Usuario</h4></b></i></u>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Codigo del usuario</label>
+                                <input type="text" value="{{usuario.codigo_usuario}}" class="form-control" name="codigo_usuario" readonly>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Nombre del Usuario</label>
+                                <input type="text" value="{{usuario.fullname}}" class="form-control" name="fullname" required readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Usuario</label>
+                                <input type="text" value="{{usuario.usuario}}" class="form-control" name="usuario" required readonly>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label>Tipo de Usuario</label>
+                                <select class="form-control" name="nombre_tipo_usuario" required>
+                                    <label>Tipo de Usuario</label>
+                                        <option value="">--Seleccione una opción--</option>
+                                        <option >Administrador</option>
+                                        <option >Médico</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary">Guardar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

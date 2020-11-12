@@ -11,14 +11,20 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
+                                    <label>Código de Referencia</label>
+                                    <input type="text" value="{{usuario.codigo_usuario}}" class="form-control" name="codigo_referencia_usuario" id="codigoUsuario" placeholder="" autofocus required onchange="buscarUsuario()">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
                                     <label>Nombres del paciente</label>
-                                    <input type="text" class="form-control" name="nombres_paciente" placeholder="Nombres paciente" autofocus required>
+                                    <input type="text" value="{{usuario.nombres}}" class="form-control" name="nombres_paciente" placeholder="Nombres paciente" autofocus required readonly>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label>Apellidos del paciente</label>
-                                    <input type="text" class="form-control" name="apellidos_paciente" placeholder="Apellidos paciente" required>
+                                    <input type="text" value="{{usuario.apellidos}}" class="form-control" name="apellidos_paciente" placeholder="Apellidos paciente" required readonly>
                                 </div>
                             </div>
                         </div>  
@@ -36,6 +42,11 @@
                                 </div>
                             </div>
                         </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <input type="hidden" value="Paciente" class="form-control" name="nombre_tipo_usuario" placeholder="5555555" maxlength="8" required>
+                                </div>
+                            </div>
                         <hr>
                         <div class="col margenBotones">
                             <div class="form-group">
@@ -48,3 +59,12 @@
         </div>
     </div>
 </div>
+
+
+<script>
+function buscarUsuario() {
+  var x = document.getElementById("codigoUsuario");
+  var valor = document.getElementById("codigoUsuario").value;
+  window.location= `/links/buscarUsuarioPaciente/${valor}`;
+}
+</script>
