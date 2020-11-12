@@ -68,9 +68,9 @@ router.post('/edit/:id', isLoggedIn,  async (req, res) => {
 
 router.get ('/fichaTratamiento/:id', isLoggedIn,  async (req, res) => {
     const { id } = req.params;
-    const fichaTratamiento = await pool.query(`SELECT f.codigo_ficha as codigo_ficha, p.codigo_paciente, p.nombres_paciente, p.apellidos_paciente, p.fecha_nac, p.telefono_paciente, m.codigo_medico, m.nombres_medico, m.apellidos_medico, e.codigo_enfermedad, e.nombre_enfermedad, e.tratamiento, c.codigo_clinica, c.nombre_clinica, c.direccion_clinica, c.telefono_clinica FROM ficha_tratamiento f inner join pacientes as p on f.codigo_ficha = p.codigo_ficha inner join medico as m on f.codigo_medico = m.codigo_medico inner join enfermedad as e on f.codigo_enfermedad = e.codigo_enfermedad inner join clinica as c on f.codigo_clinica = c.codigo_clinica WHERE p.codigo_paciente = ${id}`);
+    const fichaTratamiento = await pool.query(`select f.codigo_ficha as codigo_ficha, f.codigo_paciente, f.codigo_medico, f.codigo_enfermedad, f.comentario_medico, p.codigo_paciente, p.nombres_paciente, p.apellidos_paciente, e.nombre_enfermedad, e.tratamiento, m.nombres_medico, m.apellidos_medico from ficha_tratamiento f inner join pacientes as p on f.codigo_paciente = p.codigo_paciente inner join medico as m on f.codigo_medico = m.codigo_medico inner join enfermedad as e on f.codigo_enfermedad = e.codigo_enfermedad where f.codigo_paciente = ${id};`);
     console.log(fichaTratamiento);
-    res.render('links/fichaTratamiento', {fichaTratamiento:fichaTratamiento[0]})
+    res.render('links/fichaTratamiento', {fichaTratamiento})
 });
 
 // Servicios de Medicina -----------------------------------------------------------------------------------
@@ -311,8 +311,7 @@ router.post ('/asignarMedico', isLoggedIn,  async (req, res) => {
 router.get ('/verCitasAsignadasMedico', isLoggedIn,  async (req, res) => {
     console.log (req.user.codigo_usuario);
     console.log('El codigo del usuario', req.user.codigo_usuario);
-
-    const citasCreadas = await pool.query(`SELECT c.codigo_cita as codigo_cita, c.nombres_paciente, c.apellidos_paciente, c.fecha_cita, m.codigo_medico, m.nombres_medico FROM cita_agendada c inner join medico as m on m.codigo_medico = c.codigo_medico` );
+    const citasCreadas = await pool.query(`SELECT c.codigo_cita as codigo_cita, c.codigo_paciente, c.nombres_paciente, c.apellidos_paciente, c.fecha_cita, m.codigo_medico, m.nombres_medico FROM cita_agendada c inner join medico as m on m.codigo_medico = c.codigo_medico WHERE paciente_atendido is null` );
     console.log(citasCreadas);
     res.render('links/verCitasAsignadasMedico', {citasCreadas})
 });
@@ -383,19 +382,55 @@ router.get ('/buscarUsuarioPaciente/:id', isLoggedIn,  async (req, res) => {
 
 var idPacienteF;
 var idMedicoF;
-
-router.get ('/atenderPaciente/:idPaciente/:idMedico', isLoggedIn,  async (req, res) => {
+var idCitaF;
+router.get ('/atenderPaciente/:idCita/:idPaciente/:idMedico', isLoggedIn,  async (req, res) => {
     const { idPaciente } = req.params;
     const { idMedico } = req.params;
+    const { idCita } = req.params;
     idPacienteF = idPaciente;
     idMedicoF = idMedico;
+    idCitaF = idCita;
     console.log('Id del paciente almacenado', idPacienteF);
     console.log('Id del Medico almacenado', idMedicoF);
+    console.log('Id de la cita almacenado', idCitaF)
     const enfermedades = await pool.query(`select * from enfermedad`);
     console.log(enfermedades);
     res.render('links/atenderPaciente', {enfermedades})
 });
 
+router.post ('/atenderPaciente', isLoggedIn,  async (req, res) => {
+    try {
+        const { codigo_enfermedad, comentario_medico, codigo_paciente, codigo_medico} = req.body;
+        const fichaTratamiento = {
+            codigo_paciente,
+            codigo_medico,
+            codigo_enfermedad,
+            comentario_medico
+        };
+        console.log('El codigo del paciente debugueado', fichaTratamiento)
+        var res = fichaTratamiento.codigo_enfermedad.split('', 1);
+        fichaTratamiento.codigo_enfermedad = res;
+        fichaTratamiento.codigo_paciente = idPacienteF;
+        fichaTratamiento.codigo_medico = idMedicoF;
+        console.log('Ficha de Tratamiento corregida', fichaTratamiento);
+        await pool.query(`INSERT INTO ficha_tratamiento set ?`, [fichaTratamiento]);
+        await pool.query(`UPDATE cita_agendada SET paciente_atendido = '1' WHERE codigo_cita = ${idCitaF}`);
+        req.flash('success', 'Información agregada exitosamente');
+        res.redirect('/links/verCitasAsignadasMedico');
+      } catch (error) {
+        console.error(error);
+      }
 
 
+});
+
+router.get ('/verMisCitasMedicas', isLoggedIn,  async (req, res) => {
+    const { idPaciente } = req.params;
+    var idPacienteF = idPaciente;
+    const usuario = req.user.usuario;
+    console.log('el usuario obtenido del login', usuario);
+    const citasPaciente = await pool.query(`select c.codigo_cita as codigo_cita, c.codigo_paciente, c.nombres_paciente, c.apellidos_paciente, c.fecha_cita, c.nombres_medico, c.created_at, u.usuario from cita_agendada c inner join usuarios as u on c.nombres_paciente = u.nombres where u.nombres like  '%${usuario}%';`);
+    console.log(citasPaciente);
+    res.render('links/verMisCitasMedicas', {citasPaciente})
+});
 module.exports = router

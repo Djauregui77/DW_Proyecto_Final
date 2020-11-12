@@ -1,37 +1,44 @@
 <div class="container">
-    <h1 class="centar">Listado Citas Asignadas a  Médico</h1>
+    <h1 class="centar">Ver citas Medicas</h1>
     <div class="row">
     </div>
     <td colspan="4">
-    <input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" />
+        <input id="buscar" type="text" class="form-control" placeholder="Escriba algo para filtrar" />
     </td>
     <table class="table margen" id="tabla">
         <thead class="tamañoTituloTabla">
             <tr class="table-primary">
             <th >Código Cita</th>
-            <th >Nombre del Paciente</th>
-            <th >Apellidos del Paciente</th>
-            <th >Fecha de Cita</th>
-            <th >Nombre del Medico que atiende</th>
-            <th>Acción</th>
+            <th >Nombres Paciente</th>
+            <th >Apellidos Paciente</th>
+            <th >Fecha Cita</th>
+            <th >Nombre Médico</th>
+            <th >Fecha de creación de la Cita</th>
+            <th >Usuario de la Cita</th>
             </tr>
         </thead>
         <tbody class="table-secondary">
-            {{#each citasCreadas}}
+            {{#each citasPaciente}}
             <tr>
                 <td>{{codigo_cita}}</td>
                 <td >{{nombres_paciente}}</td>
                 <td >{{apellidos_paciente}}</td>
                 <td >{{fecha_cita}}</td>
                 <td >{{nombres_medico}}</td>
-                <td>
-                    <a href="/links/atenderPaciente/{{codigo_cita}}/{{codigo_paciente}}/{{codigo_medico}}" class="btn btn-primary btn-sm fas fa-user-injured" title="Atender Paciente"></a>
-                </td>
+                <td >{{created_at}}</td>
+                <td >{{usuario}}</td>
             </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No existen citas asignadas aun</p>
+                </div>
+            </div>
             {{/each}}
         </tbody>
     </table>
 </div>
+
 
 <script>
         document.querySelector("#buscar").onkeyup = function(){

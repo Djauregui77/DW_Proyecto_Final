@@ -1,51 +1,91 @@
-<main class="index">
-    <header class="masthead d-flex">
-        <div class="container text-center mx-auto">
-            <h3>Ficha de Tratamiento</h3>
-            <div class="row">
-                <div class="col">
-                    <i><b><h4 class="centradoTitulo">Datos de la clinica</h4></b></i>
-                    <hr>
-                    <b>Clinica: </b>{{fichaTratamiento.nombre_clinica}}<br>
-                    <b>Dirección: </b>{{fichaTratamiento.direccion_clinica}} <br>
-                    <b>Teléfono: </b>{{fichaTratamiento.telefono_clinica}}
-                    <hr>
-                </div>
-                <div class="col">
-                    <i><b><h4 class="centradoTitulo">Medico que Atiende</h4></b></i>
-                    <hr>
-                    <b>Nombres Médico: </b> {{fichaTratamiento.nombres_medico}} <br>
-                    <b>Apellidos Médico: </b> {{fichaTratamiento.apellidos_medico}}
-                    <hr>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <i><b><h4 class="centradoTitulo">Datos del Paciente</h4></b></i>
-                    <hr>
-                    <b>Nombres:</b>{{fichaTratamiento.nombres_paciente}} <br>
-                    <b>Apellidos:</b>{{fichaTratamiento.apellidos_paciente}} <br>
-                    <hr>
-                </div>
-                <div class="col">
-                    <i><b><h4 class="centradoTitulo">Enfermedad</h4></b></i>
-                    <hr>
-                    <b>Nombre de la Enfermedad: </b> {{fichaTratamiento.nombre_enfermedad}} <br>
-                    <b>Tratamiento: </b> {{fichaTratamiento.tratamiento}}
-                    <hr>
+<div class="container">
+    <h1 class="centar">Historial del paciente: <br> <i>{{fichaTratamiento.nombres_paciente}} {{fichaTratamiento.apellidos_paciente}}</i></h1>
+    <div class="row">
+    </div>
+    <table class="table margen" id="tabla">
+        <thead class="tamañoTituloTabla">
+            <tr class="table-primary">
+            <th >Nombre Paciente</th>
+            <th >Apellidos Paciente</th>
+            <th >Nombre Enfermedad</th>
+            <th >Tratamiento</th>
+            <th >Nombres Médico</th>
+            <th >Apellidos Médico</th>
+            <th >Comentario Médico</th>
+            </tr>
+        </thead>
+        <tbody class="table-secondary">
+            {{#each fichaTratamiento}}
+            <tr>
+                <td>{{nombres_paciente}}</td>
+                <td >{{apellidos_paciente}}</td>
+                <td >{{nombre_enfermedad}}</td>
+                <td >{{tratamiento}}</td>
+                <td >{{nombres_medico}}</td>
+                <td >{{apellidos_medico}}</td>
+                <td >{{comentario_medico}}</td>
+            </tr>
+            {{else}}
+            <div class="col-md-4 mx-auto">
+                <div class="card card-body text-center">
+                    <p>No existe historial del paciente seleccionado</p>
                 </div>
             </div>
-        </div>
-    </header>
-</main>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
 
-{{!-- <div class="card">
-  <div class="card-header">
-    Ficha de Tratamiento
-  </div>
-  <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div> --}}
+<script>
+        document.querySelector("#buscar").onkeyup = function(){
+        $TableFilter("#tabla", this.value);
+    }
+    
+    $TableFilter = function(id, value){
+        var rows = document.querySelectorAll(id + ' tbody tr');
+        
+        for(var i = 0; i < rows.length; i++){
+            var showRow = false;
+            
+            var row = rows[i];
+            row.style.display = 'none';
+            
+            for(var x = 0; x < row.childElementCount; x++){
+                if(row.children[x].textContent.toLowerCase().indexOf(value.toLowerCase().trim()) > -1){
+                    showRow = true;
+                    break;
+                }
+            }
+            
+            if(showRow){
+                row.style.display = null;
+            }
+        }
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
